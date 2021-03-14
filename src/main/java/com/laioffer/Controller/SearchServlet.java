@@ -1,33 +1,26 @@
-package com.laioffer.Controller;
-
+package com.laioffer.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
 import com.laioffer.external.GitHubClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-@Controller
-public class itemController {
+@RestController
+//@WebServlet(name = "SearchServlet", urlPatterns = {"/search"})
+public class SearchServlet extends HttpServlet {
 
-    @Autowired
-    private MySQLConnection connection;
-
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    @ResponseBody
-    public void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping("/search")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -39,6 +32,7 @@ public class itemController {
         double lat = Double.parseDouble(request.getParameter("lat"));
         double lon = Double.parseDouble(request.getParameter("lon"));
 
+        MySQLConnection connection = new MySQLConnection();
         Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
         connection.close();
 
@@ -49,8 +43,13 @@ public class itemController {
             item.setFavorite(favoritedItemIds.contains(item.getId()));
         }
 
+
+
         mapper.writeValue(response.getWriter(), items);
     }
 
-}
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
+}

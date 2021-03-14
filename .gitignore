@@ -1,2 +1,7 @@
 # Project exclude paths
 /target/
+.gitconfig
+*.iml
+.idea
+.DS_Store
+**/.DS_Store

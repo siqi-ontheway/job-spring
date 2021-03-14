@@ -12,20 +12,25 @@
 
     <mvc:annotation-driven></mvc:annotation-driven>
 
-    <context:component-scan base-package="com.laioffer"></context:component-scan>
+    <context:component-scan base-package="com.laioffer.controller"></context:component-scan>
 
     <!-- Using this it get the actual view name by converting logical view name -->
     <!-- for eg: logical view name is welcome -->
     <!-- it will convert it to WEB-INF/Views/welcome.jsp -->
 
+    <!--  view resolver is not used anywhere in this project  -->
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/page/" />
-        <property name="suffix" value=".jsp" />
+        <property name="prefix" value="/WEB-INF/" />
+        <property name="suffix" value="" />
     </bean>
 
     <!-- mvc:resources is to find the resource file like bootstrap,css,JQuery
         and Images in resource folder -->
 
-    <mvc:resources mapping="/resource/**" location="/WEB-INF/resource/" />
+    <!--  serve html, css, js as static resources  -->
+    <mvc:resources mapping="/**.html" location="/" />
+    <mvc:resources mapping="/**.css" location="/styles/" />
+    <mvc:resources mapping="/**.js" location="/scripts/" />
+
 </beans>

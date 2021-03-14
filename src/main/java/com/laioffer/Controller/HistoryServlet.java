@@ -1,26 +1,24 @@
-package com.laioffer.Controller;
+package com.laioffer.controller;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.HistoryRequestBody;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Set;
 
-@Controller
-public class historyController {
+@RestController
+//@WebServlet(name = "HistoryServlet", urlPatterns = {"/history"})
+public class HistoryServlet extends HttpServlet {
 
-    @Autowired
-    private MySQLConnection connection;
-    @ResponseBody
-    @RequestMapping(value = "/history/{user_id}", method = RequestMethod.GET)
-    public void getfavoriteditems(@PathVariable ("user_id") String userId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/history")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
@@ -30,15 +28,17 @@ public class historyController {
             return;
         }
         response.setContentType("application/json");
+        String userId = request.getParameter("user_id");
 
+        MySQLConnection connection = new MySQLConnection();
         Set<Item> items = connection.getFavoriteItems(userId);
         connection.close();
         mapper.writeValue(response.getWriter(), items);
 
     }
-    @ResponseBody
-    @RequestMapping(value = "/history", method = RequestMethod.POST)
-    public void addFavorite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    @PostMapping("/history")
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
@@ -51,16 +51,15 @@ public class historyController {
         response.setContentType("application/json");
         HistoryRequestBody body = mapper.readValue(request.getReader(), HistoryRequestBody.class);
 
+        MySQLConnection connection = new MySQLConnection();
         connection.setFavoriteItems(body.userId, body.favorite);
         connection.close();
 
         ResultResponse resultResponse = new ResultResponse("SUCCESS");
         mapper.writeValue(response.getWriter(), resultResponse);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public void unsetFavorite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @DeleteMapping("/history")
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -70,11 +69,12 @@ public class historyController {
         }
         HistoryRequestBody body = mapper.readValue(request.getReader(), HistoryRequestBody.class);
         response.setContentType("application/json");
+        MySQLConnection connection = new MySQLConnection();
         connection.unsetFavoriteItems(body.userId, body.favorite.getId());
         connection.close();
 
         ResultResponse resultResponse = new ResultResponse("SUCCESS");
         mapper.writeValue(response.getWriter(), resultResponse);
     }
-}
 
+}

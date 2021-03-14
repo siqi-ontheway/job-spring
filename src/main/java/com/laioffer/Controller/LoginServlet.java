@@ -1,32 +1,28 @@
-package com.laioffer.Controller;
+package com.laioffer.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.LoginRequestBody;
 import com.laioffer.entity.LoginResponseBody;
-import com.laioffer.entity.ResultResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 
+@RestController
+//@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+public class LoginServlet extends HttpServlet {
 
-@Controller
-public class HomePageController {
-    @Autowired
-    private MySQLConnection connection;
-    @ResponseBody
     @RequestMapping("/login")
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         LoginResponseBody loginResponseBody;
         LoginRequestBody body = mapper.readValue(request.getReader(), LoginRequestBody.class);
+        MySQLConnection connection = new MySQLConnection();
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             String userId = (String) session.getAttribute("user_id");
@@ -51,19 +47,5 @@ public class HomePageController {
         response.setContentType("application/json");
         mapper.writeValue(response.getWriter(), loginResponseBody);
     }
-
-    @RequestMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json");
-        ResultResponse resultResponse = new ResultResponse("OK");
-        mapper.writeValue(response.getWriter(), resultResponse);
-    }
-
 }
 

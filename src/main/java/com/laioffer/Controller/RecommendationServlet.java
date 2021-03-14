@@ -1,28 +1,24 @@
-package com.laioffer.Controller;
+package com.laioffer.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.laioffer.Recommendation.recommendation;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.laioffer.recommendation.Recommendation;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
-public class recommendationController {
+@RestController
+//@WebServlet(name = "RecommendationServlet", urlPatterns = {"/recommendation"})
+public class RecommendationServlet extends HttpServlet {
 
-    @Autowired
-    private recommendation recommendation;
-
-
-    @RequestMapping(value = "/recommend", method = RequestMethod.GET)
-    public void recommend(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping("/recommendation")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -35,9 +31,14 @@ public class recommendationController {
         double lat = Double.parseDouble(request.getParameter("lat"));
         double lon = Double.parseDouble(request.getParameter("lon"));
 
+        Recommendation recommendation = new Recommendation();
         List<Item> items = recommendation.recommendItems(userId, lat, lon);
         mapper.writeValue(response.getWriter(), items);
 
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
 }
