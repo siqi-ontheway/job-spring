@@ -60,7 +60,7 @@ public class GitHubClient {
             descriptions.add(description);
         }
 
-        List<List<String>> keywordList = monkeyLearnClient.extract(descriptions);
+        List<Set<String>> keywordList = monkeyLearnClient.extract(descriptions);
         for (int i = 0; i < items.size(); i++) {
             items.get(i).setKeywords(keywordList.get(i));
         }

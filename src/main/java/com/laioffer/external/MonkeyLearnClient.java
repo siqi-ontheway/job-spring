@@ -2,9 +2,9 @@ package com.laioffer.external;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.laioffer.handler.ExtractRequestBody;
-import com.laioffer.handler.ExtractResponseItem;
-import com.laioffer.handler.Extraction;
+import com.laioffer.entity.ExtractRequestBody;
+import com.laioffer.entity.ExtractResponseItem;
+import com.laioffer.entity.Extraction;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -20,7 +20,7 @@ public class MonkeyLearnClient {
 
     private static final String EXTRACT_URL = "https://api.monkeylearn.com/v3/extractors/ex_YCya9nrn/extract/";
     private static final String AUTH_TOKEN = "cd08f915b460b1ad482d1c6f65cfb20a77f46199";
-    public List<List<String>> extract(List<String> articles) {
+    public List<Set<String>> extract(List<String> articles) {
         ObjectMapper mapper = new ObjectMapper();
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -42,7 +42,7 @@ public class MonkeyLearnClient {
             return Collections.emptyList();
         }
 
-        ResponseHandler<List<List<String>>> responseHandler = response -> {
+        ResponseHandler<List<Set<String>>> responseHandler = response -> {
             if (response.getStatusLine().getStatusCode() != 200) {
                 return Collections.emptyList();
             }
@@ -51,9 +51,9 @@ public class MonkeyLearnClient {
                 return Collections.emptyList();
             }
             ExtractResponseItem[] results = mapper.readValue(entity.getContent(), ExtractResponseItem[].class);
-            List<List<String>> keywordList = new ArrayList<>();
+            List<Set<String>> keywordList = new ArrayList<>();
             for (ExtractResponseItem result : results) {
-                List<String> keywords = new ArrayList<>();
+                Set<String> keywords = new HashSet<>();
                 for (Extraction extraction : result.extractions) {
                     keywords.add(extraction.parsedValue);
                 }

@@ -1,4 +1,5 @@
-package com.laioffer.handler;
+package com.laioffer.entity;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,4 +17,3 @@ public class Extraction {
 
     public String relevance;
 }
-

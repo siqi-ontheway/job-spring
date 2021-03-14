@@ -4,38 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import java.io.Serializable;
-
-import javax.persistence.*;
-
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Entity
-@Table(name = "items")
-public class Item implements Serializable {
-    private static final long serialVersionUID = 5186013952828648626L;
-    @Id
-    @Column(name = "item_id")
-    private String id;
-    @Column(name = "name")
-    private String title;
-    @Column(name = "address")
-    private String location;
 
-    @Column(name = "image_url")
+public class Item {
+    private String id;
+    private String title;
+    private String location;
     private String companyLogo;
-    @Column(name = "url")
     private String url;
-    @Transient
     private String description;
-    @ElementCollection
-    private List<String> keywords;
-    @Transient
+    private Set<String> keywords;
     private boolean favorite;
     @JsonProperty("id")
     public String getId() {
@@ -76,11 +57,11 @@ public class Item implements Serializable {
         return description;
     }
 
-    public List<String> getKeywords() {
+    public Set<String> getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(List<String> keywords) {
+    public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
     }
     public boolean getFavorite() {
@@ -93,7 +74,7 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public Item(String id, String title, String location, String companyLogo, String url, String description, List<String> keywords, boolean favorite) {
+    public Item(String id, String title, String location, String companyLogo, String url, String description, Set<String> keywords, boolean favorite) {
         this.id = id;
         this.title = title;
         this.location = location;
