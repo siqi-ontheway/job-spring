@@ -5,10 +5,7 @@ import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.HistoryRequestBody;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -61,7 +58,7 @@ public class HistoryServlet extends HttpServlet {
         ResultResponse resultResponse = new ResultResponse("SUCCESS");
         mapper.writeValue(response.getWriter(), resultResponse);
     }
-    @Override
+    @DeleteMapping("/history")
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);

@@ -12,7 +12,7 @@
 
     <mvc:annotation-driven></mvc:annotation-driven>
 
-    <context:component-scan base-package="com.laioffer"></context:component-scan>
+    <context:component-scan base-package="com.laioffer.controller"></context:component-scan>
 
     <!-- Using this it get the actual view name by converting logical view name -->
     <!-- for eg: logical view name is welcome -->
