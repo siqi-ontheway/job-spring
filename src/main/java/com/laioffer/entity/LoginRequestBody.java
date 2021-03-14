@@ -10,4 +10,3 @@ public class LoginRequestBody {
     public String password;
 }
 
-

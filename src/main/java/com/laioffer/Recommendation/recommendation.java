@@ -1,14 +1,12 @@
-package com.laioffer.Recommendation;
+package com.laioffer.recommendation;
 
 import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.Item;
 import com.laioffer.external.GitHubClient;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
-public class recommendation {
+public class Recommendation {
 
     public List<Item> recommendItems(String userId, double lat, double lon) {
         List<Item> recommendedItems = new ArrayList<>();
@@ -54,5 +52,4 @@ public class recommendation {
         return recommendedItems;
     }
 }
-
 

@@ -1,21 +1,20 @@
 package com.laioffer.db;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class MySQLTableCreation {
 
-    @Autowired
-    private Connection conn;
-    public void main(String[] args) {
 
+    /*
+    public static void main(String[] args) {
         try {
             // The newInstance() call is a work around for some
             // broken Java implementations
+            System.out.println("Connecting to " + MySQLDBUtil.URL);
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Connection conn = DriverManager.getConnection(MySQLDBUtil.URL);
             if (conn == null) {
                 return;
             }
@@ -77,5 +76,5 @@ public class MySQLTableCreation {
 
         }
     }
+    */
 }
-

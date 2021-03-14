@@ -1,24 +1,18 @@
 package com.laioffer.db;
 
 import com.laioffer.entity.Item;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
 public class MySQLConnection {
     private Connection conn;
-    @Autowired
-    private DataSource dataSource;
+
     public MySQLConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            conn = dataSource.getConnection();
+            conn = DriverManager.getConnection(MySQLDBUtil.URL);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,4 +251,3 @@ public class MySQLConnection {
 
 
 }
-
