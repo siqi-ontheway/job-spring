@@ -1,9 +1,11 @@
 package com.laioffer.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
 import com.laioffer.recommendation.Recommendation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,9 +18,10 @@ import java.util.List;
 @RestController
 //@WebServlet(name = "RecommendationServlet", urlPatterns = {"/recommendation"})
 public class RecommendationServlet extends HttpServlet {
-
+    @Autowired
+    private MySQLConnection connection;
     @RequestMapping("/recommendation")
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         HttpSession session = request.getSession(false);
         if (session == null) {

@@ -1,15 +1,23 @@
 package com.laioffer.db;
 
 import com.laioffer.entity.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
+
 public class MySQLConnection {
     private Connection conn;
-
-    public MySQLConnection() {
+    public MySQLConnection () {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(MySQLDBUtil.URL);
@@ -28,7 +36,7 @@ public class MySQLConnection {
             }
         }
     }
-
+    @Transactional
     public void saveItem(Item item) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -59,6 +67,7 @@ public class MySQLConnection {
         }
 
     }
+    @Transactional
     public void setFavoriteItems(String userId, Item item) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -75,7 +84,7 @@ public class MySQLConnection {
             e.printStackTrace();
         }
     }
-
+    @Transactional
     public void unsetFavoriteItems(String userId, String itemId) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -91,6 +100,7 @@ public class MySQLConnection {
             e.printStackTrace();
         }
     }
+    @Transactional
     public Set<String> getFavoriteItemIds(String userId) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -114,6 +124,7 @@ public class MySQLConnection {
 
         return favoriteItems;
     }
+    @Transactional
     public Set<Item> getFavoriteItems(String userId) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -145,7 +156,7 @@ public class MySQLConnection {
         }
         return favoriteItems;
     }
-
+    @Transactional
     public Set<String> getKeywords(String itemId) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -166,6 +177,7 @@ public class MySQLConnection {
         }
         return keywords;
     }
+    @Transactional
     public String getFullname(String userId) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -185,7 +197,7 @@ public class MySQLConnection {
         }
         return name;
     }
-
+    @Transactional
     public boolean verifyLogin(String userId, String password) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -205,7 +217,7 @@ public class MySQLConnection {
         }
         return false;
     }
-
+    @Transactional
     public boolean addUser(String userId, String password, String firstname, String lastname) {
         if (conn == null) {
             System.err.println("DB connection failed");
@@ -226,6 +238,7 @@ public class MySQLConnection {
         }
         return false;
     }
+    @Transactional
     public void deleteUser(String userId) {
         if (conn == null) {
             System.err.println("DB connection failed");

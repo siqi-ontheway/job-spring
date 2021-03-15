@@ -5,6 +5,7 @@ import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
 import com.laioffer.external.GitHubClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,8 @@ import java.util.Set;
 @RestController
 //@WebServlet(name = "SearchServlet", urlPatterns = {"/search"})
 public class SearchServlet extends HttpServlet {
-
+    @Autowired
+    private MySQLConnection connection;
     @RequestMapping("/search")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -32,7 +34,7 @@ public class SearchServlet extends HttpServlet {
         double lat = Double.parseDouble(request.getParameter("lat"));
         double lon = Double.parseDouble(request.getParameter("lon"));
 
-        MySQLConnection connection = new MySQLConnection();
+        //MySQLConnection connection = new MySQLConnection();
         Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
         connection.close();
 

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class MySQLTableCreation {
-    /* comment in if table creation is needed
+    /* comment in if table creation is needed*/
     public static void main(String[] args) {
         try {
             // The newInstance() call is a work around for some
@@ -74,5 +74,4 @@ public class MySQLTableCreation {
 
         }
     }
-     */
 }

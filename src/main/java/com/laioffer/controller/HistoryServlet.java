@@ -5,6 +5,7 @@ import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.HistoryRequestBody;
 import com.laioffer.entity.Item;
 import com.laioffer.entity.ResultResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.*;
@@ -16,7 +17,8 @@ import java.util.Set;
 @RestController
 //@WebServlet(name = "HistoryServlet", urlPatterns = {"/history"})
 public class HistoryServlet extends HttpServlet {
-
+    @Autowired
+    private MySQLConnection connection;
     @GetMapping("/history")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -30,7 +32,7 @@ public class HistoryServlet extends HttpServlet {
         response.setContentType("application/json");
         String userId = request.getParameter("user_id");
 
-        MySQLConnection connection = new MySQLConnection();
+        //MySQLConnection connection = new MySQLConnection();
         Set<Item> items = connection.getFavoriteItems(userId);
         connection.close();
         mapper.writeValue(response.getWriter(), items);

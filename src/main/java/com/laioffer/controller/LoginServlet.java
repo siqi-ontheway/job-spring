@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laioffer.db.MySQLConnection;
 import com.laioffer.entity.LoginRequestBody;
 import com.laioffer.entity.LoginResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,13 +16,14 @@ import java.io.IOException;
 @RestController
 //@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
-
+    @Autowired
+    private MySQLConnection connection;
     @RequestMapping("/login")
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         LoginResponseBody loginResponseBody;
         LoginRequestBody body = mapper.readValue(request.getReader(), LoginRequestBody.class);
-        MySQLConnection connection = new MySQLConnection();
+        //MySQLConnection connection = new MySQLConnection();
 
         HttpSession session = request.getSession(false);
         if (session != null) {
